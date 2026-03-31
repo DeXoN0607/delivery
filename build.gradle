@@ -1,16 +1,15 @@
 plugins {
     id 'java'
+    id 'io.qameta.allure' version '2.11.2' // Добавляем плагин Allure
 }
 
 group 'ru.netology'
 version '1.0-SNAPSHOT'
 
-// используем 11 версию языка
 java {
     sourceCompatibility = 11
 }
 
-// кодировка файлов (если используете русский язык в файлах)
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
 
@@ -24,12 +23,24 @@ dependencies {
     testImplementation 'com.github.javafaker:javafaker:1.0.2'
     testImplementation 'org.projectlombok:lombok:1.18.30'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    testImplementation 'io.qameta.allure:allure-selenide:2.24.0'
+    testImplementation 'io.qameta.allure:allure-junit5:2.24.0'
 }
 
 test {
     useJUnitPlatform()
 
     systemProperty 'selenide.headless', System.getProperty('selenide.headless')
-
     systemProperty 'chromeoptions.prefs', System.getProperty('chromeoptions.prefs', "profile.password_manager_leak_detection=false")
+
+    systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
+    systemProperty 'allure.results.directory', 'build/allure-results'
+}
+
+allure {
+    version = '2.24.0'
+    useJUnit5 {
+        version = '2.24.0'
+    }
 }
